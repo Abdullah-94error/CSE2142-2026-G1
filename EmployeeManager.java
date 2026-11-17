@@ -4,94 +4,105 @@ import java.util.*;
 
 public class EmployeeManager {
 
-    // Read employee data from file
-    private static String readEmployeeFile() throws IOException {
-        BufferedReader reader = new BufferedReader(
+    // Reads employee information from the data file.
+    private static String readEmployeeData() throws IOException {
+        BufferedReader employeeReader = new BufferedReader(
             new InputStreamReader(
                 new FileInputStream(Constants.FILE_NAME)
             )
         );
 
-        String line = reader.readLine();
-        reader.close();
+        String employeeData = employeeReader.readLine();
+        employeeReader.close();
 
-        return line;
+        return employeeData;
     }
 
-    // Write employee data to file
-    private static void writeEmployeeFile(String content, boolean append)
+    // Writes employee information to the data file.
+    private static void writeEmployeeData(String content, boolean append)
             throws IOException {
 
-        BufferedWriter writer = new BufferedWriter(
+        BufferedWriter employeeWriter = new BufferedWriter(
             new FileWriter(Constants.FILE_NAME, append)
         );
 
-        writer.write(content);
-        writer.close();
+        employeeWriter.write(content);
+        employeeWriter.close();
     }
 
+    // Executes the requested employee management operation.
     public static void main(String[] args) {
 
-        // Check number of arguments
+        // Validate the number of command-line arguments.
         if (args.length != 1) {
             System.out.println(Constants.INVALID_ARGUMENT_MESSAGE);
             return;
         }
 
-        // List employees
-        if (args[0].equals("l")) {
+        String command = args[0];
+
+        // Display all employees.
+        if (command.equals("l")) {
             System.out.println(Constants.LOADING_MESSAGE);
 
             try {
-                for (String employee : readEmployeeFile().split(Constants.COMMA)) {
-                    System.out.println(employee);
+                for (String employeeName :
+                        readEmployeeData().split(Constants.COMMA)) {
+                    System.out.println(employeeName);
                 }
 
             } catch (Exception exception) {
+                System.out.println("Error reading employee data.");
             }
 
             System.out.println(Constants.DATA_LOADED_MESSAGE);
 
-        // Select random employee
-        } else if (args[0].equals("s")) {
+        // Display a randomly selected employee.
+        } else if (command.equals("s")) {
             System.out.println(Constants.LOADING_MESSAGE);
 
             try {
-                String employeeData = readEmployeeFile();
+                String employeeData = readEmployeeData();
+                String[] employeeNames = employeeData.split(Constants.COMMA);
+
                 System.out.println(employeeData);
 
-                String[] employees = employeeData.split(Constants.COMMA);
-
                 System.out.println(
-                    employees[new Random().nextInt(employees.length)]
+                    employeeNames[
+                        new Random().nextInt(employeeNames.length)
+                    ]
                 );
 
             } catch (Exception exception) {
+                System.out.println("Error selecting employee.");
             }
 
             System.out.println(Constants.DATA_LOADED_MESSAGE);
 
-        // Add employee
-        } else if (args[0].startsWith("+") && args[0].length() > 1) {
+        // Add a new employee.
+        } else if (command.startsWith("+") && command.length() > 1) {
             System.out.println(Constants.LOADING_MESSAGE);
 
             try {
-                writeEmployeeFile(
-                    Constants.COMMA_SPACE + args[0].substring(1), true
+                writeEmployeeData(
+                    Constants.COMMA_SPACE + command.substring(1), true
                 );
 
             } catch (Exception exception) {
+                System.out.println("Error adding employee.");
             }
 
             System.out.println(Constants.DATA_LOADED_MESSAGE);
 
-        // Search employee
-        } else if (args[0].startsWith("?") && args[0].length() > 1) {
+        // Search for an employee.
+        } else if (command.startsWith("?") && command.length() > 1) {
             System.out.println(Constants.LOADING_MESSAGE);
 
             try {
-                for (String employee : readEmployeeFile().split(Constants.COMMA)) {
-                    if (employee.equals(args[0].substring(1))) {
+                for (String employeeName :
+                        readEmployeeData().split(Constants.COMMA)) {
+
+                    if (employeeName.equals(command.substring(1))) {
                         System.out.println(Constants.EMPLOYEE_FOUND_MESSAGE);
                         System.out.println(Constants.DATA_LOADED_MESSAGE);
                         return;
@@ -101,70 +112,77 @@ public class EmployeeManager {
                 System.out.println("Employee not found!");
 
             } catch (Exception exception) {
+                System.out.println("Error searching employee.");
             }
 
             System.out.println(Constants.DATA_LOADED_MESSAGE);
 
-        // Count words
-        } else if (args[0].equals("c")) {
+        // Count the words in employee data.
+        } else if (command.equals("c")) {
             System.out.println(Constants.LOADING_MESSAGE);
 
             try {
-                String line = readEmployeeFile();
-                int wordCount = line.trim().split("\\s+").length;
+                String employeeData = readEmployeeData();
+                int wordCount = employeeData.trim().split("\\s+").length;
 
                 System.out.println(
-                    wordCount + " word(s) found " + line.length()
+                    wordCount + " word(s) found " + employeeData.length()
                 );
 
             } catch (Exception exception) {
+                System.out.println("Error counting words.");
             }
 
             System.out.println(Constants.DATA_LOADED_MESSAGE);
 
-        // Update employee
-        } else if (args[0].startsWith("u") && args[0].length() > 1) {
+        // Update an employee's information.
+        } else if (command.startsWith("u") && command.length() > 1) {
             System.out.println(Constants.LOADING_MESSAGE);
 
             try {
-                String[] employees = readEmployeeFile().split(Constants.COMMA);
+                String[] employeeNames =
+                    readEmployeeData().split(Constants.COMMA);
 
-                for (int i = 0; i < employees.length; i++) {
-                    if (employees[i].equals(args[0].substring(1))) {
-                        employees[i] = Constants.UPDATED_VALUE;
+                for (int index = 0; index < employeeNames.length; index++) {
+                    if (employeeNames[index].equals(command.substring(1))) {
+                        employeeNames[index] = Constants.UPDATED_VALUE;
                     }
                 }
 
-                writeEmployeeFile(
-                    String.join(Constants.COMMA, employees), false
+                writeEmployeeData(
+                    String.join(Constants.COMMA, employeeNames), false
                 );
 
             } catch (Exception exception) {
+                System.out.println("Error updating employee.");
             }
 
             System.out.println(Constants.DATA_UPDATED_MESSAGE);
 
-        // Delete employee
-        } else if (args[0].startsWith("d") && args[0].length() > 1) {
+        // Delete an employee from the data file.
+        } else if (command.startsWith("d") && command.length() > 1) {
             System.out.println(Constants.LOADING_MESSAGE);
 
             try {
-                List<String> employeeList = new ArrayList<>(
-                    Arrays.asList(readEmployeeFile().split(Constants.COMMA))
+                List<String> employeeNames = new ArrayList<>(
+                    Arrays.asList(
+                        readEmployeeData().split(Constants.COMMA)
+                    )
                 );
 
-                employeeList.remove(args[0].substring(1));
+                employeeNames.remove(command.substring(1));
 
-                writeEmployeeFile(
-                    String.join(Constants.COMMA, employeeList), false
+                writeEmployeeData(
+                    String.join(Constants.COMMA, employeeNames), false
                 );
 
             } catch (Exception exception) {
+                System.out.println("Error deleting employee.");
             }
 
             System.out.println(Constants.DATA_DELETED_MESSAGE);
 
-        // Handle invalid commands
+        // Display a message for unsupported commands.
         } else {
             System.out.println("Invalid argument!");
         }
