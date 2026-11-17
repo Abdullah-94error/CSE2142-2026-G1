@@ -106,19 +106,7 @@ public class EmployeeManager {
 
             try {
                 String line = readEmployeeFile();
-                boolean isInWord = false;
-                int wordCount = 0;
-
-                for (int i = 0; i < line.length(); i++) {
-                    if (line.charAt(i) == Constants.SPACE.charAt(0)) {
-                        if (!isInWord) {
-                            wordCount++;
-                            isInWord = true;
-                        } else {
-                            isInWord = false;
-                        }
-                    }
-                }
+                int wordCount = line.trim().split("\\s+").length;
 
                 System.out.println(
                     wordCount + " word(s) found " + line.length()
