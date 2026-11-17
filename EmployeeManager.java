@@ -1,6 +1,4 @@
 
-
-
 import java.io.*;
 import java.util.*;
 
@@ -88,15 +86,15 @@ public class EmployeeManager {
             System.out.println(Constants.LOADING_MESSAGE);
 
             try {
-                boolean found = false;
-
                 for (String employee : readEmployeeFile().split(Constants.COMMA)) {
                     if (employee.equals(args[0].substring(1))) {
                         System.out.println(Constants.EMPLOYEE_FOUND_MESSAGE);
-                        found = true;
-                        break;
+                        System.out.println(Constants.DATA_LOADED_MESSAGE);
+                        return;
                     }
                 }
+
+                System.out.println("Employee not found!");
 
             } catch (Exception exception) {
             }
