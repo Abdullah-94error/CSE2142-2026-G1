@@ -32,12 +32,13 @@ public class EmployeeManager {
 
     public static void main(String[] args) {
 
-        // Check arguments
+        // Check number of arguments
         if (args.length != 1) {
             System.out.println(Constants.INVALID_ARGUMENT_MESSAGE);
             return;
         }
 
+        // List employees
         if (args[0].equals("l")) {
             System.out.println(Constants.LOADING_MESSAGE);
 
@@ -51,6 +52,7 @@ public class EmployeeManager {
 
             System.out.println(Constants.DATA_LOADED_MESSAGE);
 
+        // Select random employee
         } else if (args[0].equals("s")) {
             System.out.println(Constants.LOADING_MESSAGE);
 
@@ -69,7 +71,8 @@ public class EmployeeManager {
 
             System.out.println(Constants.DATA_LOADED_MESSAGE);
 
-        } else if (args[0].contains("+")) {
+        // Add employee
+        } else if (args[0].startsWith("+") && args[0].length() > 1) {
             System.out.println(Constants.LOADING_MESSAGE);
 
             try {
@@ -82,7 +85,8 @@ public class EmployeeManager {
 
             System.out.println(Constants.DATA_LOADED_MESSAGE);
 
-        } else if (args[0].contains("?")) {
+        // Search employee
+        } else if (args[0].startsWith("?") && args[0].length() > 1) {
             System.out.println(Constants.LOADING_MESSAGE);
 
             try {
@@ -101,7 +105,8 @@ public class EmployeeManager {
 
             System.out.println(Constants.DATA_LOADED_MESSAGE);
 
-        } else if (args[0].contains("c")) {
+        // Count words
+        } else if (args[0].equals("c")) {
             System.out.println(Constants.LOADING_MESSAGE);
 
             try {
@@ -117,7 +122,8 @@ public class EmployeeManager {
 
             System.out.println(Constants.DATA_LOADED_MESSAGE);
 
-        } else if (args[0].contains("u")) {
+        // Update employee
+        } else if (args[0].startsWith("u") && args[0].length() > 1) {
             System.out.println(Constants.LOADING_MESSAGE);
 
             try {
@@ -138,7 +144,8 @@ public class EmployeeManager {
 
             System.out.println(Constants.DATA_UPDATED_MESSAGE);
 
-        } else if (args[0].contains("d")) {
+        // Delete employee
+        } else if (args[0].startsWith("d") && args[0].length() > 1) {
             System.out.println(Constants.LOADING_MESSAGE);
 
             try {
@@ -156,6 +163,10 @@ public class EmployeeManager {
             }
 
             System.out.println(Constants.DATA_DELETED_MESSAGE);
+
+        // Handle invalid commands
+        } else {
+            System.out.println("Invalid argument!");
         }
     }
 }
