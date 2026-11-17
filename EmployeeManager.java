@@ -1,11 +1,35 @@
 
-
 // File Name: EmployeeManager.java
-
 import java.io.*;
 import java.util.*;
 
 public class EmployeeManager {
+
+    // Read employee data from file
+    private static String readEmployeeFile() throws IOException {
+        BufferedReader reader = new BufferedReader(
+            new InputStreamReader(
+                new FileInputStream("employees.txt")
+            )
+        );
+
+        String line = reader.readLine();
+        reader.close();
+
+        return line;
+    }
+
+    // Write employee data to file
+    private static void writeEmployeeFile(String content, boolean append)
+            throws IOException {
+
+        BufferedWriter writer = new BufferedWriter(
+            new FileWriter("employees.txt", append)
+        );
+
+        writer.write(content);
+        writer.close();
+    }
 
     public static void main(String[] args) {
 
@@ -19,13 +43,7 @@ public class EmployeeManager {
             System.out.println("Loading data ...");
 
             try {
-                BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(
-                        new FileInputStream("employees.txt")
-                    )
-                );
-
-                String line = reader.readLine();
+                String line = readEmployeeFile();
                 String employees[] = line.split(",");
 
                 for (String employee : employees) {
@@ -41,13 +59,7 @@ public class EmployeeManager {
             System.out.println("Loading data ...");
 
             try {
-                BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(
-                        new FileInputStream("employees.txt")
-                    )
-                );
-
-                String line = reader.readLine();
+                String line = readEmployeeFile();
                 System.out.println(line);
 
                 String employees[] = line.split(",");
@@ -65,13 +77,8 @@ public class EmployeeManager {
             System.out.println("Loading data ...");
 
             try {
-                BufferedWriter writer = new BufferedWriter(
-                    new FileWriter("employees.txt", true)
-                );
-
                 String name = args[0].substring(1);
-                writer.write(", " + name);
-                writer.close();
+                writeEmployeeFile(", " + name, true);
 
             } catch (Exception exception) {
             }
@@ -82,13 +89,7 @@ public class EmployeeManager {
             System.out.println("Loading data ...");
 
             try {
-                BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(
-                        new FileInputStream("employees.txt")
-                    )
-                );
-
-                String line = reader.readLine();
+                String line = readEmployeeFile();
                 String employees[] = line.split(",");
                 boolean found = false;
                 String searchName = args[0].substring(1);
@@ -109,13 +110,7 @@ public class EmployeeManager {
             System.out.println("Loading data ...");
 
             try {
-                BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(
-                        new FileInputStream("employees.txt")
-                    )
-                );
-
-                String line = reader.readLine();
+                String line = readEmployeeFile();
                 char[] characters = line.toCharArray();
                 boolean isInWord = false;
                 int wordCount = 0;
@@ -144,13 +139,7 @@ public class EmployeeManager {
             System.out.println("Loading data ...");
 
             try {
-                BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(
-                        new FileInputStream("employees.txt")
-                    )
-                );
-
-                String line = reader.readLine();
+                String line = readEmployeeFile();
                 String employees[] = line.split(",");
                 String name = args[0].substring(1);
 
@@ -160,12 +149,7 @@ public class EmployeeManager {
                     }
                 }
 
-                BufferedWriter writer = new BufferedWriter(
-                    new FileWriter("employees.txt")
-                );
-
-                writer.write(String.join(",", employees));
-                writer.close();
+                writeEmployeeFile(String.join(",", employees), false);
 
             } catch (Exception exception) {
             }
@@ -176,13 +160,7 @@ public class EmployeeManager {
             System.out.println("Loading data ...");
 
             try {
-                BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(
-                        new FileInputStream("employees.txt")
-                    )
-                );
-
-                String line = reader.readLine();
+                String line = readEmployeeFile();
                 String employees[] = line.split(",");
                 String name = args[0].substring(1);
 
@@ -192,12 +170,7 @@ public class EmployeeManager {
 
                 employeeList.remove(name);
 
-                BufferedWriter writer = new BufferedWriter(
-                    new FileWriter("employees.txt")
-                );
-
-                writer.write(String.join(",", employeeList));
-                writer.close();
+                writeEmployeeFile(String.join(",", employeeList), false);
 
             } catch (Exception exception) {
             }
